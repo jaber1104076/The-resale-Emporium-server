@@ -55,6 +55,17 @@ async function run() {
             const result = await usersCollection.insertOne(query)
             res.send(result)
         })
+
+        app.get('/myorder', async (req, res) => {
+            let query = {}
+            if (req.query.email) {
+                query = {
+                    email: req.query.email
+                }
+            }
+            const result = await bookingsCollection.find(query).toArray()
+            res.send(result)
+        })
     }
 
     finally {
