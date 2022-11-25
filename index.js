@@ -20,6 +20,8 @@ async function run() {
     try {
         const productsCollection = client.db('ResaleEmporium').collection('products');
         const catagoryCollection = client.db('ResaleEmporium').collection('catagory');
+        const bookingsCollection = client.db('ResaleEmporium').collection('bookings');
+        const usersCollection = client.db('ResaleEmporium').collection('users');
 
 
         app.get('/products', async (req, res) => {
@@ -39,6 +41,18 @@ async function run() {
             console.log(id)
             const filter = { _id: ObjectId(id) }
             const result = await catagoryCollection.findOne(filter)
+            res.send(result)
+        })
+        app.post('/bookings', async (req, res) => {
+            const query = req.body
+            const result = await bookingsCollection.insertOne(query)
+            res.send(result)
+
+        })
+
+        app.post('/users', async (req, res) => {
+            const query = req.body;
+            const result = await usersCollection.insertOne(query)
             res.send(result)
         })
     }
