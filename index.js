@@ -33,6 +33,14 @@ async function run() {
             const result = await catagoryCollection.find(filter).toArray()
             res.send(result)
         })
+
+        app.get('/catagories/:id', async (req, res) => {
+            const id = req.params.id
+            console.log(id)
+            const filter = { _id: ObjectId(id) }
+            const result = await catagoryCollection.findOne(filter)
+            res.send(result)
+        })
     }
 
     finally {
