@@ -22,6 +22,7 @@ async function run() {
         const catagoryCollection = client.db('ResaleEmporium').collection('catagory');
         const bookingsCollection = client.db('ResaleEmporium').collection('bookings');
         const usersCollection = client.db('ResaleEmporium').collection('users');
+        const addProductsCollection = client.db('ResaleEmporium').collection('addProducts');
 
         //admin verify
         const verifyAdmin = async (req, res, next) => {
@@ -49,7 +50,6 @@ async function run() {
 
         app.get('/catagories/:id', async (req, res) => {
             const id = req.params.id
-            console.log(id)
             const filter = { _id: ObjectId(id) }
             const result = await catagoryCollection.findOne(filter)
             res.send(result)
@@ -85,6 +85,7 @@ async function run() {
 
         app.get('/users/admin/:email', async (req, res) => {
             const email = req.params.email;
+            console.log(email)
             const query = { email }
             const user = await usersCollection.findOne(query);
             res.send({ isAdmin: user?.role === 'admin' });
@@ -102,6 +103,11 @@ async function run() {
             const result = await usersCollection.updateOne(filter, updatedDoc, options);
             res.send(result);
         });
+        app.post('/addproducts', async (req, res) => {
+            const query = req.body;
+            const result = await addProductsCollection.insertOne(query)
+            res.send(result)
+        })
     }
 
     finally {
