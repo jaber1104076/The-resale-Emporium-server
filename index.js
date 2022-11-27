@@ -24,6 +24,7 @@ async function run() {
         const usersCollection = client.db('ResaleEmporium').collection('users');
         const addProductsCollection = client.db('ResaleEmporium').collection('addProducts');
         const paymentsCollection = client.db('ResaleEmporium').collection('payments');
+        const advertiseCollection = client.db('ResaleEmporium').collection('advertise');
 
         //admin verify
         const verifyAdmin = async (req, res, next) => {
@@ -158,7 +159,29 @@ async function run() {
             const result = await addProductsCollection.find(query).toArray()
             res.send(result)
         })
-
+        app.get('/myproducts/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await addProductsCollection.findOne(query)
+            res.send(result)
+        })
+        // Products info from mongodb database
+        app.delete('/myproducts/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const result = await addProductsCollection.deleteOne(filter);
+            res.send(result);
+        });
+        app.post('/advertise', async (req, res) => {
+            const query = req.body;
+            const users = await advertiseCollection.insertOne(query)
+            res.send(users)
+        })
+        app.get('/advertise', async (req, res) => {
+            const query = {}
+            const result = await advertiseCollection.find(query).toArray()
+            res.send(result)
+        })
     }
 
     finally {
