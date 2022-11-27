@@ -125,6 +125,13 @@ async function run() {
             res.send(users);
         });
 
+        app.delete('/users/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const result = await usersCollection.deleteOne(filter);
+            res.send(result);
+        })
+
         app.get('/users/admin/:email', async (req, res) => {
             const email = req.params.email;
             const query = { email }
@@ -165,7 +172,6 @@ async function run() {
             const result = await addProductsCollection.findOne(query)
             res.send(result)
         })
-        // Products info from mongodb database
         app.delete('/myproducts/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: ObjectId(id) }
@@ -182,6 +188,7 @@ async function run() {
             const result = await advertiseCollection.find(query).toArray()
             res.send(result)
         })
+
     }
 
     finally {
